@@ -40,6 +40,7 @@ kotlin {
             implementation(libs.koin.android)
             implementation(libs.koin.android.compose)
             implementation(libs.ktor.client.okhttp)
+            implementation(libs.androidx.compose.material3.android)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -59,10 +60,14 @@ kotlin {
             implementation(libs.bundles.ktor)
             api(libs.datastore)
             api(libs.datastore.preferences)
+            implementation(libs.kotlinx.collections.immutable)
+
+//            implementation(libs.androidx.compose.material3)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
+            implementation(libs.androidx.compose.material3.desk)
         }
     }
 }

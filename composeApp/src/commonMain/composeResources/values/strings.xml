@@ -3,4 +3,12 @@
     <string name="market_screen">Market</string>
     <string name="search_screen">Search</string>
     <string name="favourites_screen">Favourites</string>
+    <string name="market_coin_sort_market_cap">Market Cap</string>
+    <string name="market_coin_sort_gainers">Gainers</string>
+    <string name="market_coin_sort_losers">Losers</string>
+    <string name="market_coin_sort_popular">Popular</string>
+    <string name="market_coin_sort_newest">Newest</string>
+    <string name="currency_usd" translatable="false">USD</string>
+    <string name="currency_gbp" translatable="false">GBP</string>
+    <string name="currency_eur" translatable="false">EUR</string>
 </resources>

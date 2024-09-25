@@ -37,6 +37,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.market.crypto.ui.screens.market.MarketScreen
 import com.market.crypto.ui.theme.LocalAppColors
 import cryptomarket.composeapp.generated.resources.Res
 import cryptomarket.composeapp.generated.resources.favourites_screen
@@ -99,7 +100,7 @@ fun NavigationBarNavHost(
         modifier = modifier
     ) {
         composable(route = NavigationBarScreen.Market.route) {
-            Text("Market")
+            MarketScreen()
         }
 
         composable(route = NavigationBarScreen.Favourites.route) {

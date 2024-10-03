@@ -9,7 +9,7 @@ data class CoinsApiModel(
 
 @Serializable
 data class CoinsData(
-    val coins: List<CoinApiModel?>?
+    val coins: List<CoinApiModel>
 )
 
 @Serializable

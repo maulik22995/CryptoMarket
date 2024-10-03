@@ -11,4 +11,5 @@
     <string name="currency_usd" translatable="false">USD</string>
     <string name="currency_gbp" translatable="false">GBP</string>
     <string name="currency_eur" translatable="false">EUR</string>
+    <string name="error_coins_unavailable">coin data unavailable</string>
 </resources>

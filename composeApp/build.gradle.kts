@@ -61,6 +61,11 @@ kotlin {
             api(libs.datastore)
             api(libs.datastore.preferences)
             implementation(libs.kotlinx.collections.immutable)
+            implementation(libs.coil.compose.core)
+            implementation(libs.coil.compose)
+            implementation(libs.coil.mp)
+            implementation(libs.coil.svg)
+            implementation(libs.coil.network.ktor)
         }
         nativeMain.dependencies {
             implementation(libs.ktor.client.darwin)

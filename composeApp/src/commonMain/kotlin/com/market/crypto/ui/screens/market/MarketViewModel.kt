@@ -20,15 +20,15 @@ class MarketViewModel(private val coinRepository: CoinRepository) : ViewModel() 
     val uiState = _uiState.asStateFlow()
 
     init {
-        initialiseUiState()
+        fetchCoins()
     }
 
-    private fun initialiseUiState() {
-        _uiState.update { it.copy(isLoading = true) }
+    private fun fetchCoins(coinSort: CoinSort = CoinSort.Popular,showLoading : Boolean = true) {
+        _uiState.update { it.copy(isLoading = showLoading) }
         viewModelScope.launch {
             try {
                 val response = coinRepository.getRemoteCoins(
-                    coinSort = CoinSort.Popular,
+                    coinSort = coinSort,
                     currency = Currency.USD
                 )
 
@@ -64,5 +64,12 @@ class MarketViewModel(private val coinRepository: CoinRepository) : ViewModel() 
             }
         }
 
+    }
+
+    fun updateCoinSort(coinSort: CoinSort){
+        _uiState.update {
+            it.copy(coinSort = coinSort)
+        }
+        fetchCoins(coinSort,false)
     }
 }

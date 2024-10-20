@@ -10,7 +10,7 @@ data class MarketUiState(
     val coins: ImmutableList<CoinApiModel> = persistentListOf(),
     val timeOfDay: TimeOfDay = TimeOfDay.Morning,
 //    val marketCapChangePercentage24h: Percentage? = null,
-    val coinSort: CoinSort = CoinSort.MarketCap,
+    val coinSort: CoinSort = CoinSort.Popular,
     val isRefreshing: Boolean = false,
     val isLoading: Boolean = false,
     val errorMessageIds: List<StringResource> = persistentListOf()

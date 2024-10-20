@@ -14,10 +14,10 @@ data class CoinsData(
 
 @Serializable
 data class CoinApiModel(
-    val uuid: String?,
-    val symbol: String?,
-    val name: String?,
-    val iconUrl: String?,
-    val price: String?,
-    val change: String?
+    val uuid: String,
+    val symbol: String,
+    val name: String,
+    val iconUrl: String,
+    val price: String,
+    val change: String
 )

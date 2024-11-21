@@ -8,18 +8,25 @@ plugins {
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.room)
+    alias(libs.plugins.kspCompose)
 }
 
 kotlin {
+
+    sourceSets.commonMain {
+        kotlin.srcDir("build/generated/ksp/metadata")
+    }
+
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
+
     jvm("desktop")
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -30,10 +37,10 @@ kotlin {
             isStatic = true
         }
     }
-    
+
     sourceSets {
         val desktopMain by getting
-        
+
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
@@ -41,6 +48,7 @@ kotlin {
             implementation(libs.koin.android.compose)
             implementation(libs.ktor.client.okhttp)
             implementation(libs.androidx.compose.material3.android)
+            implementation(libs.room.runtime.android)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -66,6 +74,8 @@ kotlin {
             implementation(libs.coil.mp)
             implementation(libs.coil.svg)
             implementation(libs.coil.network.ktor)
+            implementation(libs.room.runtime)
+//            implementation(libs.room.compiler)
         }
         nativeMain.dependencies {
             implementation(libs.ktor.client.darwin)
@@ -124,6 +134,49 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "com.market.crypto"
             packageVersion = "1.0.0"
+        }
+    }
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
+}
+
+dependencies {
+    ksp(libs.room.compiler)
+    listOf(
+        "kspAndroid",
+        // "kspJvm",
+        "kspIosSimulatorArm64",
+        "kspIosX64",
+        "kspIosArm64"
+    ).forEach {
+        add(it, libs.room.compiler)
+    }
+}
+
+tasks.withType<Test> {
+    if (name == "mergeDebugAndroidTestAssets") {
+        enabled = false
+    }
+}
+
+tasks.withType<Test> {
+    if (name == "copyRoomSchemasToAndroidTestAssetsDebugAndroidTest") {
+        enabled = false
+    }
+}
+
+tasks.whenTaskAdded {
+    if (name.contains("copyRoomSchemasToAndroidTestAssetsDebugAndroidTest")) {
+        enabled = false
+    }
+}
+
+gradle.taskGraph.whenReady {
+    allTasks.onEach { task ->
+        if (task.name.contains("androidTest") || task.name.contains("connectedAndroidTest")) {
+            task.enabled = false
         }
     }
 }

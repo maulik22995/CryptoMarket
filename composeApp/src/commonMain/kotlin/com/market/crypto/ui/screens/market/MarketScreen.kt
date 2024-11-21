@@ -38,6 +38,7 @@ import coil3.memory.MemoryCache
 import coil3.request.CachePolicy
 import coil3.request.crossfade
 import coil3.util.DebugLogger
+import com.market.crypto.data.source.local.database.model.Coin
 import com.market.crypto.data.source.local.model.CoinSort
 import com.market.crypto.data.source.remote.model.CoinApiModel
 import com.market.crypto.ui.components.CoinSortChip
@@ -104,7 +105,7 @@ fun MarketScreenUI(
 
 @Composable
 fun MarketContent(
-    coins: ImmutableList<CoinApiModel>, onCoinClick: (CoinApiModel) -> Unit,
+    coins: ImmutableList<Coin>, onCoinClick: (Coin) -> Unit,
     coinSort: CoinSort,
     onUpdateCoinSort: (CoinSort) -> Unit,
     lazyListState: LazyListState,
@@ -136,7 +137,7 @@ fun MarketContent(
             }
             items(
                 count = coins.size,
-                key = { coins[it].uuid!! },
+                key = { coins[it].id },
                 itemContent = { index ->
                     val coinListItem = coins[index]
 
@@ -152,7 +153,7 @@ fun MarketContent(
 
 @Composable
 fun MarketCoinItem(
-    coin: CoinApiModel,
+    coin: Coin,
     modifier: Modifier = Modifier
 ) {
     Card(elevation = 5.dp, modifier = modifier.padding(10.dp), shape = RoundedCornerShape(8.dp)) {
@@ -163,11 +164,11 @@ fun MarketCoinItem(
             ) {
                 coil3.compose.AsyncImage(
                     modifier = modifier.size(50.dp).clip(shape = RoundedCornerShape(25.dp)),
-                    model = coin.iconUrl,
+                    model = coin.imageUrl,
                     contentDescription = coin.name,
                     contentScale = ContentScale.Fit,
                     onError = { it ->
-                        println("url error>> ${coin.iconUrl} error is ${it.result.throwable}")
+                        println("url error>> ${coin.imageUrl} error is ${it.result.throwable}")
                     }
                 )
 

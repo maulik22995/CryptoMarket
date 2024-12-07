@@ -10,7 +10,7 @@ import org.jetbrains.compose.resources.StringResource
 data class MarketUiState(
     val coins: ImmutableList<Coin> = persistentListOf(),
     val timeOfDay: TimeOfDay = TimeOfDay.Morning,
-//    val marketCapChangePercentage24h: Percentage? = null,
+    val marketCapChangePercentage24h: Percentage? = null,
     val coinSort: CoinSort = CoinSort.Popular,
     val isRefreshing: Boolean = false,
     val isLoading: Boolean = false,

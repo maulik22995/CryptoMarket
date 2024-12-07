@@ -12,4 +12,8 @@
     <string name="currency_gbp" translatable="false">GBP</string>
     <string name="currency_eur" translatable="false">EUR</string>
     <string name="error_coins_unavailable">coin data unavailable</string>
+    <string name="error_market_stats">Market change unavailable</string>
+    <string name="market_is_up">Market is up</string>
+    <string name="market_is_down">Market is down</string>
+    <string name="market_is_flat">Market is flat</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.market.crypto.ui.screens.market
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -24,6 +25,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.key.Key.Companion.R
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -40,13 +42,19 @@ import coil3.request.crossfade
 import coil3.util.DebugLogger
 import com.market.crypto.data.source.local.database.model.Coin
 import com.market.crypto.data.source.local.model.CoinSort
-import com.market.crypto.data.source.remote.model.CoinApiModel
 import com.market.crypto.ui.components.CoinSortChip
 import com.market.crypto.ui.components.LoadingIndicator
 import com.market.crypto.ui.model.MarketUiState
+import com.market.crypto.ui.model.Percentage
+import com.market.crypto.ui.model.TimeOfDay
 import com.market.crypto.ui.theme.LocalAppColors
+import cryptomarket.composeapp.generated.resources.Res
+import cryptomarket.composeapp.generated.resources.market_is_down
+import cryptomarket.composeapp.generated.resources.market_is_flat
+import cryptomarket.composeapp.generated.resources.market_is_up
 import kotlinx.collections.immutable.ImmutableList
 import okio.FileSystem
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import kotlin.math.round
 
@@ -56,7 +64,7 @@ fun MarketScreen(marketViewModel: MarketViewModel = koinViewModel<MarketViewMode
 
     MarketScreenUI(
         uiState,
-        onUpdateCoinSort = {coinSort ->
+        onUpdateCoinSort = { coinSort ->
             marketViewModel.updateCoinSort(coinSort)
         }
     )
@@ -75,7 +83,7 @@ fun MarketScreenUI(
     }
     Scaffold(
         topBar = {
-
+            MarketToolBar(uiState.timeOfDay, uiState.marketCapChangePercentage24h)
         },
         modifier = modifier.fillMaxSize()
     ) { padding ->
@@ -104,6 +112,28 @@ fun MarketScreenUI(
 }
 
 @Composable
+fun MarketToolBar(timeOfDay: TimeOfDay, marketCapChangePercentage24h: Percentage?) {
+    Column(modifier = Modifier.animateContentSize().padding(horizontal = 20.dp, vertical = 15.dp)) {
+        Text(
+            text = "Good ${timeOfDay.name.toString()}",
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            color = LocalAppColors.current.themeDark
+        )
+        marketCapChangePercentage24h?.let {
+            Text(
+                text = when {
+                    it.isPositive -> stringResource(Res.string.market_is_up)
+                    it.isNegative -> stringResource(Res.string.market_is_down)
+                    else -> stringResource(Res.string.market_is_flat)
+                },
+                color = LocalAppColors.current.themeDark
+            )
+        }
+    }
+}
+
+@Composable
 fun MarketContent(
     coins: ImmutableList<Coin>, onCoinClick: (Coin) -> Unit,
     coinSort: CoinSort,
@@ -120,20 +150,20 @@ fun MarketContent(
             modifier = modifier
         ) {
             item {
-              Row(
-                  horizontalArrangement = Arrangement.spacedBy(8.dp),
-                  modifier = Modifier
-                      .horizontalScroll(rememberScrollState())
-                      .padding(bottom = 8.dp)
-              ) {
-                  CoinSort.entries.forEach { coinSortEntry ->
-                      CoinSortChip(
-                          coinSort = coinSortEntry,
-                          selected = coinSortEntry == coinSort,
-                          onClick = { onUpdateCoinSort(coinSortEntry) }
-                      )
-                  }
-              }
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier
+                        .horizontalScroll(rememberScrollState())
+                        .padding(bottom = 8.dp)
+                ) {
+                    CoinSort.entries.forEach { coinSortEntry ->
+                        CoinSortChip(
+                            coinSort = coinSortEntry,
+                            selected = coinSortEntry == coinSort,
+                            onClick = { onUpdateCoinSort(coinSortEntry) }
+                        )
+                    }
+                }
             }
             items(
                 count = coins.size,
@@ -205,7 +235,7 @@ fun MarketCoinItem(
                 }?.toString() ?: "0.00"  // Default value if conversion fails
 
                 val isDown = coin.change.startsWith("-")
-                val change = if(isDown) "${coin.change}%" else "+${coin.change}%"
+                val change = if (isDown) "${coin.change}%" else "+${coin.change}%"
 
                 Text(
                     text = "$${price}",

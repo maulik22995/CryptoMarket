@@ -75,9 +75,9 @@ kotlin {
             implementation(libs.coil.svg)
             implementation(libs.coil.network.ktor)
             implementation(libs.room.runtime)
-//            implementation(libs.room.compiler)
+            implementation(libs.kotlinx.datetime)
         }
-        nativeMain.dependencies {
+        iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
         }
         desktopMain.dependencies {
@@ -144,15 +144,8 @@ room {
 
 dependencies {
     ksp(libs.room.compiler)
-    listOf(
-        "kspAndroid",
-        // "kspJvm",
-        "kspIosSimulatorArm64",
-        "kspIosX64",
-        "kspIosArm64"
-    ).forEach {
-        add(it, libs.room.compiler)
-    }
+    // Room
+    add("kspCommonMainMetadata", libs.room.compiler)
 }
 
 tasks.withType<Test> {

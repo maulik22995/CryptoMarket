@@ -2,13 +2,17 @@ package com.market.crypto.di
 
 import com.market.crypto.common.Constants
 import com.market.crypto.data.mapper.CoinMapper
+import com.market.crypto.data.mapper.MarketStatsMapper
 import com.market.crypto.data.repository.coin.CoinRepository
 import com.market.crypto.data.repository.coin.CoinRepositoryImpl
+import com.market.crypto.data.repository.marketStatus.MarketStatsRepository
+import com.market.crypto.data.repository.marketStatus.MarketStatsRepositoryImpl
 import com.market.crypto.data.source.local.database.CoinLocalDataSource
 import com.market.crypto.data.source.local.database.CoinLocalDataSourceImpl
 import com.market.crypto.data.source.remote.CoinNetworkDataSource
 import com.market.crypto.data.source.remote.CoinNetworkDataSourceImpl
 import com.market.crypto.domain.market.GetCoinUseCase
+import com.market.crypto.domain.market.GetMarketStatsUseCase
 import com.market.crypto.domain.market.UpdateCachedCoinsUseCase
 import com.market.crypto.ui.screens.market.MarketViewModel
 import io.ktor.client.HttpClient
@@ -48,10 +52,12 @@ val viewModels = module {
 
 val repositoryModule = module {
     singleOf(::CoinRepositoryImpl).bind<CoinRepository>()
+    singleOf(::MarketStatsRepositoryImpl).bind<MarketStatsRepository>()
 }
 
 val mapperModule = module {
     single { CoinMapper() }
+    single { MarketStatsMapper() }
 }
 
 val dataSourceModule = module {
@@ -62,6 +68,7 @@ val dataSourceModule = module {
 val useCasesModules = module {
     single { GetCoinUseCase(get()) }
     single { UpdateCachedCoinsUseCase(get()) }
+    single { GetMarketStatsUseCase(get()) }
 }
 
 val networkModule = module {

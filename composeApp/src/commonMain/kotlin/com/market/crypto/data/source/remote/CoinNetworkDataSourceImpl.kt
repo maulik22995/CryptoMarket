@@ -1,13 +1,13 @@
 package com.market.crypto.data.source.remote
 
 import com.market.crypto.common.Constants.BASE_URL
-import com.market.crypto.common.Result
 import com.market.crypto.data.source.local.model.CoinSort
 import com.market.crypto.data.source.local.model.Currency
 import com.market.crypto.data.source.local.model.getOrderBy
 import com.market.crypto.data.source.local.model.getOrderDirection
 import com.market.crypto.data.source.local.model.toCurrencyUUID
 import com.market.crypto.data.source.remote.model.CoinsApiModel
+import com.market.crypto.data.source.remote.model.MarketStatsApiModel
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -28,4 +28,8 @@ class CoinNetworkDataSourceImpl(private val httpClient: HttpClient) : CoinNetwor
             }.body<CoinsApiModel>()
 
         }
+
+    override suspend fun getMarketStatus(): MarketStatsApiModel = withContext(Dispatchers.IO) {
+        return@withContext httpClient.get("${BASE_URL}/stats/coins").body<MarketStatsApiModel>()
+    }
 }

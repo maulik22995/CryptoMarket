@@ -1,6 +1,7 @@
 package com.market.crypto.ui.screens.market
 
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,16 +17,16 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardElevation
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.input.key.Key.Companion.R
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -59,11 +60,15 @@ import org.koin.compose.viewmodel.koinViewModel
 import kotlin.math.round
 
 @Composable
-fun MarketScreen(marketViewModel: MarketViewModel = koinViewModel<MarketViewModel>()) {
+fun MarketScreen(
+    marketViewModel: MarketViewModel = koinViewModel<MarketViewModel>(),
+    onCoinClick: (Coin) -> Unit
+) {
     val uiState by marketViewModel.uiState.collectAsStateWithLifecycle()
 
     MarketScreenUI(
         uiState,
+        onCoinClick = onCoinClick,
         onUpdateCoinSort = { coinSort ->
             marketViewModel.updateCoinSort(coinSort)
         }
@@ -75,6 +80,7 @@ fun MarketScreenUI(
     uiState: MarketUiState,
     modifier: Modifier = Modifier,
     onUpdateCoinSort: (CoinSort) -> Unit,
+    onCoinClick: (Coin) -> Unit
 ) {
     val scope = rememberCoroutineScope()
     val listState = rememberLazyListState()
@@ -100,7 +106,7 @@ fun MarketScreenUI(
                 else -> {
                     MarketContent(
                         coins = uiState.coins,
-                        onCoinClick = {},
+                        onCoinClick = onCoinClick,
                         coinSort = uiState.coinSort,
                         onUpdateCoinSort = onUpdateCoinSort,
                         lazyListState = listState
@@ -173,7 +179,8 @@ fun MarketContent(
 
                     MarketCoinItem(
                         coinListItem,
-                        Modifier
+                        Modifier,
+                        onCoinClick
                     )
                 }
             )
@@ -184,10 +191,15 @@ fun MarketContent(
 @Composable
 fun MarketCoinItem(
     coin: Coin,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onCoinClick: (Coin) -> Unit
 ) {
-    Card(elevation = 5.dp, modifier = modifier.padding(10.dp), shape = RoundedCornerShape(8.dp)) {
-        Box(modifier = modifier.fillMaxWidth().padding(10.dp)) {
+    Card(modifier = modifier.padding(10.dp).clickable {
+        onCoinClick(coin)
+    }, shape = RoundedCornerShape(8.dp)) {
+        Box(modifier = modifier.fillMaxWidth().padding(10.dp).clickable {
+            onCoinClick(coin)
+        }) {
             Row(
                 modifier = modifier, verticalAlignment = Alignment
                     .CenterVertically

@@ -1,20 +1,29 @@
 package com.market.crypto.di
 
 import com.market.crypto.common.Constants
+import com.market.crypto.data.mapper.CoinChartMapper
+import com.market.crypto.data.mapper.CoinDetailsMapper
 import com.market.crypto.data.mapper.CoinMapper
 import com.market.crypto.data.mapper.MarketStatsMapper
+import com.market.crypto.data.repository.chart.CoinChartRepository
+import com.market.crypto.data.repository.chart.CoinChartRepositoryImpl
 import com.market.crypto.data.repository.coin.CoinRepository
 import com.market.crypto.data.repository.coin.CoinRepositoryImpl
+import com.market.crypto.data.repository.details.CoinDetailsRepository
+import com.market.crypto.data.repository.details.CoinDetailsRepositoryImpl
 import com.market.crypto.data.repository.marketStatus.MarketStatsRepository
 import com.market.crypto.data.repository.marketStatus.MarketStatsRepositoryImpl
 import com.market.crypto.data.source.local.database.CoinLocalDataSource
 import com.market.crypto.data.source.local.database.CoinLocalDataSourceImpl
 import com.market.crypto.data.source.remote.CoinNetworkDataSource
 import com.market.crypto.data.source.remote.CoinNetworkDataSourceImpl
+import com.market.crypto.domain.details.GetCoinChartUseCase
+import com.market.crypto.domain.details.GetCoinDetailsUseCase
 import com.market.crypto.domain.market.GetCoinUseCase
 import com.market.crypto.domain.market.GetMarketStatsUseCase
 import com.market.crypto.domain.market.UpdateCachedCoinsUseCase
 import com.market.crypto.ui.screens.market.MarketViewModel
+import com.market.crypto.ui.screens.details.DetailsViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
@@ -48,16 +57,21 @@ expect val platformModule: Module
 
 val viewModels = module {
     viewModelOf(::MarketViewModel)
+    viewModelOf(::DetailsViewModel)
 }
 
 val repositoryModule = module {
     singleOf(::CoinRepositoryImpl).bind<CoinRepository>()
     singleOf(::MarketStatsRepositoryImpl).bind<MarketStatsRepository>()
+    singleOf(::CoinDetailsRepositoryImpl).bind<CoinDetailsRepository>()
+    singleOf(::CoinChartRepositoryImpl).bind<CoinChartRepository>()
 }
 
 val mapperModule = module {
     single { CoinMapper() }
     single { MarketStatsMapper() }
+    single { CoinChartMapper() }
+    single { CoinDetailsMapper() }
 }
 
 val dataSourceModule = module {
@@ -69,6 +83,8 @@ val useCasesModules = module {
     single { GetCoinUseCase(get()) }
     single { UpdateCachedCoinsUseCase(get()) }
     single { GetMarketStatsUseCase(get()) }
+    single { GetCoinDetailsUseCase(get()) }
+    single { GetCoinChartUseCase(get()) }
 }
 
 val networkModule = module {
@@ -80,7 +96,7 @@ fun createHttpClient(): HttpClient {
         install(Logging) {
             level = LogLevel.ALL
             headers {
-                HeadersBuilder()["x-access-toke"] = Constants.API_KEY
+                HeadersBuilder()["x-access-token"] = Constants.API_KEY
             }
         }
         install(ContentNegotiation) {

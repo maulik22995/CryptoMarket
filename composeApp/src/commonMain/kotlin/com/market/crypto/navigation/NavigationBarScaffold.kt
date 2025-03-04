@@ -2,6 +2,9 @@ package com.market.crypto.navigation
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -16,10 +19,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.BottomNavigationDefaults
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material3.BottomAppBarDefaults
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -37,6 +40,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.market.crypto.data.source.local.database.model.Coin
+import com.market.crypto.ui.screens.details.DetailsScreen
 import com.market.crypto.ui.screens.market.MarketScreen
 import com.market.crypto.ui.theme.LocalAppColors
 import cryptomarket.composeapp.generated.resources.Res
@@ -100,7 +105,7 @@ fun NavigationBarNavHost(
         modifier = modifier
     ) {
         composable(route = NavigationBarScreen.Market.route) {
-            MarketScreen()
+            MarketScreen(onCoinClick = { coin: Coin -> navController.navigate(Screen.Details.route + "/${coin.id}") })
         }
 
         composable(route = NavigationBarScreen.Favourites.route) {
@@ -109,6 +114,16 @@ fun NavigationBarNavHost(
 
         composable(route = NavigationBarScreen.Search.route) {
             Text("Search")
+        }
+
+        composable(
+            route = Screen.Details.route + "/{coinId}",
+            enterTransition = { fadeIn(animationSpec = tween(500)) },
+            exitTransition = { fadeOut(animationSpec = tween(500)) }
+        ) {
+            DetailsScreen(onNavigateUp = {
+                navController.navigateUp()
+            })
         }
     }
 }
@@ -172,7 +187,7 @@ fun AppBottomNavigationBar(
     Surface(
         color = colors.background,
         contentColor = colors.onBackground,
-        modifier = modifier.windowInsetsPadding(BottomNavigationDefaults.windowInsets)
+        modifier = modifier.windowInsetsPadding(BottomAppBarDefaults.windowInsets)
     ) {
         if (show) {
             Column(

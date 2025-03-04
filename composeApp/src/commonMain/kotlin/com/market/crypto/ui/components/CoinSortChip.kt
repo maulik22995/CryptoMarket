@@ -1,11 +1,12 @@
 package com.market.crypto.ui.components
 
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.ChipDefaults
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.FilterChip
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material3.ChipColors
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -22,7 +23,6 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun CoinSortChip(
     coinSort: CoinSort,
@@ -53,13 +53,14 @@ fun CoinSortChip(
                 contentDescription = null
             )
         },
-        colors = ChipDefaults.filterChipColors(
-            selectedContentColor = LocalAppColors.current.onPrimary,
-            contentColor = LocalAppColors.current.themeLightDark,
-            backgroundColor = LocalAppColors.current.surface,
-            selectedBackgroundColor = LocalAppColors.current.primary,
+        colors = FilterChipDefaults.filterChipColors(
+            containerColor = LocalAppColors.current.surface,
+            labelColor = LocalAppColors.current.themeLightDark,
+            selectedContainerColor = LocalAppColors.current.primary,
+            selectedLabelColor = LocalAppColors.current.onPrimary,
         ),
-        content = { Text(text = stringResource(coinSort.nameId)) },
+        shape = MaterialTheme.shapes.small,
+        label = { Text(text = stringResource(coinSort.nameId)) },
         border = null,
         modifier = modifier
     )

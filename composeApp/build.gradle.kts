@@ -53,7 +53,7 @@ kotlin {
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
-            implementation(compose.material)
+            implementation(compose.material3)
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
@@ -76,6 +76,7 @@ kotlin {
             implementation(libs.coil.network.ktor)
             implementation(libs.room.runtime)
             implementation(libs.kotlinx.datetime)
+            implementation(libs.kotlin.serialization)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)

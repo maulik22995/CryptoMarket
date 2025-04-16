@@ -26,11 +26,15 @@ import com.market.crypto.ui.screens.market.MarketViewModel
 import com.market.crypto.ui.screens.details.DetailsViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.http.HeadersBuilder
 import io.ktor.http.headers
+import io.ktor.http.headersOf
 import io.ktor.serialization.kotlinx.json.json
+import io.ktor.util.appendIfNameAbsent
 import kotlinx.serialization.json.Json
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
@@ -93,11 +97,17 @@ val networkModule = module {
 
 fun createHttpClient(): HttpClient {
     return HttpClient {
+        defaultRequest {
+            headers.appendIfNameAbsent("x-access-token",Constants.API_KEY)
+        }
         install(Logging) {
-            level = LogLevel.ALL
-            headers {
-                HeadersBuilder()["x-access-token"] = Constants.API_KEY
+            logger = object : Logger{
+                override fun log(message: String) {
+                    println(message)
+                }
+
             }
+            level = LogLevel.ALL
         }
         install(ContentNegotiation) {
             json(

@@ -16,4 +16,21 @@
     <string name="market_is_up">Market is up</string>
     <string name="market_is_down">Market is down</string>
     <string name="market_is_flat">Market is flat</string>
+    <string name="empty_state_coins_subtitle">Check your internet connection</string>
+    <string name="error_occurred">An error has occurred</string>
+    <string name="empty_chart_message">No chart data available</string>
+    <string name="empty_chart_range_message">No chart range data available</string>
+    <string name="empty_chart_message_short">No chart data</string>
+    <string name="range_title_low">Low</string>
+    <string name="range_title_high">High</string>
+    <string name="title_chart_range">Chart Range</string>
+    <string name="card_header_market_stats">Market Stats</string>
+    <string name="list_item_market_cap_rank">Market Cap Rank</string>
+    <string name="list_item_market_cap">Market Cap</string>
+    <string name="list_item_circulating_supply">Circulating Supply</string>
+    <string name="list_item_ath">All Time High</string>
+    <string name="list_item_ath_dollar_only">All Time High ($)</string>
+    <string name="list_item_ath_date">All Time High Date</string>
+    <string name="list_item_volume_24h">Volume (24h)</string>
+    <string name="list_item_listed_date">Listed Date</string>
 </resources>

@@ -18,6 +18,7 @@ data class ExtendedColors(
     val marketDown: Color,
     val themeLightDark: Color,
     val themeDark: Color,
+    val textThemeColor : Color
 )
 
 val lightExtendedColors = ExtendedColors(
@@ -34,7 +35,8 @@ val lightExtendedColors = ExtendedColors(
     marketDown = Color(0XFFFF0000),
     marketUp = Color(0XFF008000),
     themeDark = Color(0XFF000000),
-    themeLightDark = Color(0XFF000000).copy(alpha = 0.6f)
+    themeLightDark = Color(0XFF000000).copy(alpha = 0.6f),
+    textThemeColor = Color(0XFFFFFFFF)
 )
 
 val darkExtendedColors = ExtendedColors(
@@ -51,7 +53,8 @@ val darkExtendedColors = ExtendedColors(
     marketDown = Color(0XFFFF0000),
     marketUp = Color(0XFF008000),
     themeDark = Color(0XFFFFFFFF),
-    themeLightDark = Color(0XFFFFFFFF).copy(alpha = 0.6f)
+    themeLightDark = Color(0XFFFFFFFF).copy(alpha = 0.6f),
+    textThemeColor =  Color(0XFF121212),
 )
 
 

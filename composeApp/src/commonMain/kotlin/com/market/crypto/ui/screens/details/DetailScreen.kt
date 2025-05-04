@@ -2,8 +2,14 @@ package com.market.crypto.ui.screens.details
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,9 +31,18 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.market.crypto.model.CoinChart
 import com.market.crypto.model.CoinDetails
+import com.market.crypto.ui.components.ErrorState
+import com.market.crypto.ui.components.LoadingIndicator
 import com.market.crypto.ui.model.ChartPeriod
+import com.market.crypto.ui.screens.details.components.CoinChartCard
+import com.market.crypto.ui.screens.details.components.CoinChartRangeCard
 import com.market.crypto.ui.screens.details.components.EmptyTopBar
+import com.market.crypto.ui.screens.details.components.MarketStatsCard
+import cryptomarket.composeapp.generated.resources.Res
+import cryptomarket.composeapp.generated.resources.card_header_market_stats
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -39,8 +54,8 @@ fun DetailsScreen(
     DetailsScreenUI(
         uiState,
         onNavigateUp,
-        onClickChartPeriod = {
-
+        onClickChartPeriod = { chartPeriod ->
+            viewModel.updateChartPeriod(chartPeriod)
         }
     )
 }
@@ -69,7 +84,82 @@ fun DetailsScreenUI(
                 EmptyTopBar(onNavigateUp)
             }
         }
-    }, modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection)) {
+    }, modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection)) {scaffoldPadding ->
+        when(uiState){
+            is DetailsUiState.Success -> {
+                    DetailsContent(
+                        uiState.coinDetails,
+                        uiState.coinChart,
+                        uiState.chartPeriod,
+                        onClickChartPeriod,
+                        Modifier.padding(scaffoldPadding)
+                    )
+            }
+
+            is DetailsUiState.Error -> {
+                ErrorState(
+                    message = uiState.message,
+                    modifier = Modifier.padding(scaffoldPadding)
+                )
+            }
+
+            is DetailsUiState.Loading -> {
+                LoadingIndicator()
+            }
+        }
+
+    }
+}
+
+@Composable
+fun DetailsContent(
+    coinDetails: CoinDetails,
+    coinChart: CoinChart,
+    chartPeriod: ChartPeriod,
+    onClickChartPeriod: (ChartPeriod) -> Unit,
+    modifier: Modifier
+) {
+    Column(modifier = modifier
+        .fillMaxSize()
+        .verticalScroll(rememberScrollState())
+        .padding(start = 12.dp, end = 12.dp, bottom = 12.dp)
+    ) {
+        CoinChartCard(
+            coinDetails.currentPrice,
+            coinChart.prices,
+            coinChart.periodPriceChangePercentage,
+            chartPeriod,
+            onClickChartPeriod
+        )
+
+        Spacer(Modifier.height(24.dp))
+
+        Text(
+            text = "Chart Range",
+            style = MaterialTheme.typography.titleMedium
+        )
+
+        Spacer(Modifier.height(8.dp))
+
+        CoinChartRangeCard(
+            currentPrice = coinDetails.currentPrice,
+            minPrice = coinChart.minPrice,
+            maxPrice = coinChart.maxPrice,
+            isPricesEmpty = coinChart.prices.isEmpty()
+        )
+
+        Spacer(Modifier.height(24.dp))
+
+        Text(
+            text = stringResource(Res.string.card_header_market_stats),
+            style = MaterialTheme.typography.titleMedium
+        )
+
+        Spacer(Modifier.height(8.dp))
+
+        MarketStatsCard(
+            coinDetails
+        )
 
     }
 }
@@ -92,7 +182,7 @@ fun DetailsTopBar(
             }
         },
         title = {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(end = 10.dp)) {
 
                 Column(modifier = Modifier.weight(1f)) {
                     Text(

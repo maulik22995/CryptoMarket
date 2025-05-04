@@ -72,4 +72,8 @@ class DetailsViewModel(
             }
         }.launchIn(viewModelScope)
     }
+
+    fun updateChartPeriod(chartPeriod: ChartPeriod) {
+        chartPeriodFlow.value = chartPeriod
+    }
 }

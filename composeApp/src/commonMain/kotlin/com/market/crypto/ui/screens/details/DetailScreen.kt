@@ -1,5 +1,6 @@
 package com.market.crypto.ui.screens.details
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -40,6 +41,7 @@ import com.market.crypto.ui.screens.details.components.CoinChartCard
 import com.market.crypto.ui.screens.details.components.CoinChartRangeCard
 import com.market.crypto.ui.screens.details.components.EmptyTopBar
 import com.market.crypto.ui.screens.details.components.MarketStatsCard
+import com.market.crypto.ui.theme.LocalAppColors
 import cryptomarket.composeapp.generated.resources.Res
 import cryptomarket.composeapp.generated.resources.card_header_market_stats
 import org.jetbrains.compose.resources.stringResource
@@ -122,6 +124,7 @@ fun DetailsContent(
     Column(modifier = modifier
         .fillMaxSize()
         .verticalScroll(rememberScrollState())
+        .background(LocalAppColors.current.background)
         .padding(start = 12.dp, end = 12.dp, bottom = 12.dp)
     ) {
         CoinChartCard(
@@ -194,7 +197,7 @@ fun DetailsTopBar(
                     Text(
                         text = coinDetails.symbol,
                         style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = LocalAppColors.current.onSurfaceVariant,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -212,8 +215,8 @@ fun DetailsTopBar(
             }
         },
         colors = TopAppBarDefaults.largeTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.background,
-            scrolledContainerColor = MaterialTheme.colorScheme.background
+            containerColor = LocalAppColors.current.background,
+            scrolledContainerColor = LocalAppColors.current.background
         ),
         scrollBehavior = scrollBehavior,
         modifier = modifier

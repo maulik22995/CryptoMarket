@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.market.crypto.extension.formatDate
 import com.market.crypto.extension.formattedAmount
 import com.market.crypto.model.CoinDetails
+import com.market.crypto.ui.theme.LocalAppColors
 import cryptomarket.composeapp.generated.resources.Res
 import cryptomarket.composeapp.generated.resources.list_item_ath
 import cryptomarket.composeapp.generated.resources.list_item_ath_date
@@ -69,13 +70,14 @@ fun MarketStatsCard(
 
     Surface(
         shape = MaterialTheme.shapes.medium,
-        modifier = modifier
+        modifier = modifier,
+        color = LocalAppColors.current.surface
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 coinDetailItems.forEachIndexed { coinDetailsIndex, coinDetailsListItem ->
                     if (coinDetailsIndex != 0) {
-                        HorizontalDivider(color = MaterialTheme.colorScheme.primaryContainer)
+                        HorizontalDivider(color = LocalAppColors.current.primaryContainer)
                     }
 
                     Row(
@@ -85,13 +87,13 @@ fun MarketStatsCard(
                         Text(
                             text = stringResource(coinDetailsListItem.nameId),
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = LocalAppColors.current.onSurfaceVariant
                         )
 
                         Text(
                             text = coinDetailsListItem.value,
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurface
+                            color = LocalAppColors.current.onSurface
                         )
                     }
                 }

@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.market.crypto.extension.formattedAmount
+import com.market.crypto.ui.theme.LocalAppColors
 import cryptomarket.composeapp.generated.resources.Res
 import cryptomarket.composeapp.generated.resources.empty_chart_range_message
 import cryptomarket.composeapp.generated.resources.range_title_high
@@ -33,7 +34,8 @@ fun CoinChartRangeCard(
 ) {
     Surface(
         shape = MaterialTheme.shapes.medium,
-        modifier = modifier
+        modifier = modifier,
+        color = LocalAppColors.current.surface
     ) {
         if (!isPricesEmpty) {
             Column(modifier = Modifier.padding(12.dp)) {
@@ -54,7 +56,7 @@ fun CoinChartRangeCard(
                         Text(
                             text = stringResource(Res.string.range_title_low),
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = LocalAppColors.current.onSurfaceVariant
                         )
 
                         Text(
@@ -66,7 +68,7 @@ fun CoinChartRangeCard(
                         Text(
                             text = stringResource(Res.string.range_title_high),
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = LocalAppColors.current.onSurfaceVariant
                         )
 
                         Text(

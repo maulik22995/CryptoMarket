@@ -45,19 +45,19 @@ fun CoinSortChip(
             Icon(
                 painter = painterResource(imageVector),
                 tint = if (selected) {
-                    LocalAppColors.current.onPrimary
+                    LocalAppColors.current.onSurface
                 } else {
-                    LocalAppColors.current.themeLightDark
+                    LocalAppColors.current.onSurfaceVariant
                 },
                 modifier = Modifier.size(20.dp),
                 contentDescription = null
             )
         },
         colors = FilterChipDefaults.filterChipColors(
-            containerColor = LocalAppColors.current.surface,
-            labelColor = LocalAppColors.current.themeLightDark,
-            selectedContainerColor = LocalAppColors.current.primary,
-            selectedLabelColor = LocalAppColors.current.onPrimary,
+            containerColor = LocalAppColors.current.background,
+            labelColor = LocalAppColors.current.onSurfaceVariant,
+            selectedContainerColor = LocalAppColors.current.surface,
+            selectedLabelColor = LocalAppColors.current.onSurface,
         ),
         shape = MaterialTheme.shapes.small,
         label = { Text(text = stringResource(coinSort.nameId)) },

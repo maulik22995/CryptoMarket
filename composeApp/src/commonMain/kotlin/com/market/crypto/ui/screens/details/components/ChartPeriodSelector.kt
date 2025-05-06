@@ -21,6 +21,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.market.crypto.ui.model.ChartPeriod
+import com.market.crypto.ui.theme.LocalAppColors
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -32,7 +33,7 @@ fun ChartPeriodSelector(
 ){
     Surface(
         shape = MaterialTheme.shapes.medium,
-        color = MaterialTheme.colorScheme.background,
+        color = LocalAppColors.current.background,
         modifier = modifier
     ) {
 
@@ -44,9 +45,9 @@ fun ChartPeriodSelector(
         Row(modifier = Modifier.padding(4.dp)) {
             chartPeriods.forEach { chartPeriod ->
                 val backgroundColor = if (chartPeriod == selectedChartPeriod) {
-                    MaterialTheme.colorScheme.surface
+                    LocalAppColors.current.surface
                 } else {
-                    MaterialTheme.colorScheme.background
+                    LocalAppColors.current.background
                 }
 
                 Box(

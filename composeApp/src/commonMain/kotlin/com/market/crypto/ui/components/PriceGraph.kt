@@ -36,7 +36,7 @@ fun PriceGraph(
         prices.maxOrNull() ?: 0.0
     }
     val isDown = priceChangePercentage.startsWith("-")
-    val color = if (isDown) LocalAppColors.current.marketDown else LocalAppColors.current.marketUp
+    val color = if (isDown) LocalAppColors.current.positiveGreen else LocalAppColors.current.negativeRed
     val graphPathColor = remember { color }
     val graphFillGradientColor = remember(graphPathColor) {
         graphPathColor.copy(alpha = 0.5f)

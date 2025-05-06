@@ -41,10 +41,10 @@ fun ChartRangeLine(
     }
 
 
-    val negativeRed = LocalAppColors.current.marketDown
+    val negativeRed = LocalAppColors.current.negativeRed
 
 
-    val positiveGreen = LocalAppColors.current.marketUp
+    val positiveGreen = LocalAppColors.current.positiveGreen
 
     Canvas(modifier = modifier) {
         val canvasWidth = size.width

@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,7 +39,7 @@ fun CoinChartCard(
     modifier: Modifier = Modifier
 ) {
 
-    Surface(shape = MaterialTheme.shapes.medium, modifier = modifier) {
+    Surface(shape = MaterialTheme.shapes.medium, color = LocalAppColors.current.surface,  modifier = modifier) {
         Column(modifier = Modifier.padding(vertical = 12.dp)) {
 
             Column(modifier = Modifier.padding(horizontal = 12.dp)) {
@@ -49,7 +50,7 @@ fun CoinChartCard(
 
                 Text(
                     text = "$$price",
-                    color = LocalAppColors.current.themeLightDark,
+                    color = LocalAppColors.current.onSurface,
                     style = MaterialTheme.typography.headlineSmall,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.ExtraBold,
@@ -64,13 +65,13 @@ fun CoinChartCard(
 
                     Text(
                         text = change,
-                        color = LocalAppColors.current.textThemeColor,
+                        color = Color.White,
                         style = MaterialTheme.typography.headlineSmall,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier
                             .background(
-                                if (isDown) LocalAppColors.current.marketDown else LocalAppColors.current.marketUp,
+                                if (isDown) LocalAppColors.current.negativeRed else LocalAppColors.current.positiveGreen,
                                 shape = RoundedCornerShape(5.dp),
                             ).padding(vertical = 1.dp, horizontal = 6.dp)
                     )
@@ -80,7 +81,7 @@ fun CoinChartCard(
                     if (currentPrice.isNotEmpty()) {
                         Text(
                             text = chartPeriod.longNameId,
-                            color = LocalAppColors.current.themeLightDark
+                            color = LocalAppColors.current.onSurfaceVariant
                         )
                     }
 

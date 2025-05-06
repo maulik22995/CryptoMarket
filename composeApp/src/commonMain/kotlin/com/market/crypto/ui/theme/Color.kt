@@ -5,56 +5,67 @@ import androidx.compose.ui.graphics.Color
 
 data class ExtendedColors(
     val primary: Color,
-    val secondaryColor: Color,
+    val primaryContainer: Color,
+    val onPrimaryContainer: Color,
     val background: Color,
-    val surface: Color,
-    val error: Color,
-    val onPrimary: Color,
-    val onSecondary: Color,
     val onBackground: Color,
+    val surface: Color,
     val onSurface: Color,
-    val onError: Color,
-    val marketUp: Color,
-    val marketDown: Color,
-    val themeLightDark: Color,
-    val themeDark: Color,
-    val textThemeColor : Color
+    val onSurfaceVariant: Color,
+    val positiveGreen :Color,
+    val negativeRed : Color,
+    val zeroNeutral : Color
 )
 
+val dark_primary = Color(0xFFFFFFFF)
+val dark_primaryContainer = Color(0xFF384670)
+val dark_onPrimaryContainer = Color(0xFFFFFFFF)
+val dark_background = Color(0xFF152241)
+val dark_onBackground = Color(0xFFFFFFFF)
+val dark_surface = Color(0xFF223260)
+val dark_onSurface = Color(0xFFFFFFFF)
+val dark_onSurfaceVariant = Color(0xFFBDBDBD)
+
+val PositiveGreen = Color(0xFF17C683)
+val NegativeRed = Color(0xFFEA3943)
+val ZeroWhite = Color(0xFFFFFFFF)
+val ZeroBlack = Color(0x00000000)
+
+val light_primary = Color(0xFF223260)
+val light_primaryContainer = Color(0xFFCBD8FF)
+val light_onPrimaryContainer = Color(0xFF1A233C)
+val light_background = Color(0xFFFFFFFF)
+val light_onBackground = Color(0xFF152241)
+val light_surface = Color(0xFFF2F6FF)
+val light_onSurface = Color(0xFF152241)
+val light_onSurfaceVariant = Color(0xFF4A4A4A)
+
 val lightExtendedColors = ExtendedColors(
-    primary = Color(0XFF0224ee),
-    secondaryColor = Color(0XFFaf9ef6),
-    background = Color(0XFFFFFFFF),
-    surface = Color(0XFFFFFFFF),
-    error = Color(0XFFB00020),
-    onPrimary = Color(0XFFFFFFFF),
-    onSecondary = Color(0XFF000000),
-    onBackground = Color(0XFF000000),
-    onSurface = Color(0XFF000000),
-    onError = Color(0XFFFFFFFF),
-    marketDown = Color(0XFFFF0000),
-    marketUp = Color(0XFF008000),
-    themeDark = Color(0XFF000000),
-    themeLightDark = Color(0XFF000000).copy(alpha = 0.6f),
-    textThemeColor = Color(0XFFFFFFFF)
+    primary = light_primary,
+    primaryContainer = light_primaryContainer,
+    onPrimaryContainer = light_onPrimaryContainer,
+    background = light_background,
+    onBackground = light_onBackground,
+    surface = light_surface,
+    onSurface = light_onSurface,
+    onSurfaceVariant = light_onSurfaceVariant,
+    positiveGreen = PositiveGreen,
+    negativeRed = NegativeRed,
+    zeroNeutral = ZeroBlack
 )
 
 val darkExtendedColors = ExtendedColors(
-    primary = Color(0XFF6a6e81),  // A dark purple that works well on dark surfaces
-    secondaryColor = Color(0XFF373c4D),  // A teal color often used in Material dark themes
-    background = Color(0XFF121212),
-    surface = Color(0XFF1E1E1E),
-    error = Color(0XFFCF6679),
-    onPrimary = Color(0XFF000000),  // Contrast color on lighter primary
-    onSecondary = Color(0XFF000000),
-    onBackground = Color(0XFFFFFFFF),
-    onSurface = Color(0XFFFFFFFF),
-    onError = Color(0XFF000000),
-    marketDown = Color(0XFFFF0000),
-    marketUp = Color(0XFF008000),
-    themeDark = Color(0XFFFFFFFF),
-    themeLightDark = Color(0XFFFFFFFF).copy(alpha = 0.6f),
-    textThemeColor =  Color(0XFF121212),
+    primary = dark_primary,
+    primaryContainer = dark_primaryContainer,
+    onPrimaryContainer = dark_onPrimaryContainer,
+    background = dark_background,
+    onBackground = dark_onBackground,
+    surface = dark_surface,
+    onSurface = dark_onSurface,
+    onSurfaceVariant = dark_onSurfaceVariant,
+    positiveGreen = PositiveGreen,
+    negativeRed = NegativeRed,
+    zeroNeutral = ZeroWhite
 )
 
 

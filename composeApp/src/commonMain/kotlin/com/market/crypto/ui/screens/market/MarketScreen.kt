@@ -1,6 +1,7 @@
 package com.market.crypto.ui.screens.market
 
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -16,10 +17,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardElevation
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,6 +31,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -91,7 +97,8 @@ fun MarketScreenUI(
         topBar = {
             MarketToolBar(uiState.timeOfDay, uiState.marketCapChangePercentage24h)
         },
-        modifier = modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize(),
+        containerColor = LocalAppColors.current.background
     ) { padding ->
         Box(
             contentAlignment = Alignment.Center,
@@ -124,7 +131,7 @@ fun MarketToolBar(timeOfDay: TimeOfDay, marketCapChangePercentage24h: Percentage
             text = "Good ${timeOfDay.name.toString()}",
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
-            color = LocalAppColors.current.themeDark
+            color = LocalAppColors.current.onBackground
         )
         marketCapChangePercentage24h?.let {
             Text(
@@ -133,7 +140,7 @@ fun MarketToolBar(timeOfDay: TimeOfDay, marketCapChangePercentage24h: Percentage
                     it.isNegative -> stringResource(Res.string.market_is_down)
                     else -> stringResource(Res.string.market_is_flat)
                 },
-                color = LocalAppColors.current.themeDark
+                color = LocalAppColors.current.onSurfaceVariant
             )
         }
     }
@@ -176,10 +183,24 @@ fun MarketContent(
                 key = { coins[it].id },
                 itemContent = { index ->
                     val coinListItem = coins[index]
+                    val cardShape = when (index) {
+                        0 -> MaterialTheme.shapes.medium.copy(
+                            bottomStart = CornerSize(0.dp),
+                            bottomEnd = CornerSize(0.dp)
+                        )
+
+                        coins.lastIndex -> MaterialTheme.shapes.medium.copy(
+                            topStart = CornerSize(0.dp),
+                            topEnd = CornerSize(0.dp)
+                        )
+
+                        else -> RoundedCornerShape(0.dp)
+                    }
 
                     MarketCoinItem(
                         coinListItem,
                         Modifier,
+                        cardShape,
                         onCoinClick
                     )
                 }
@@ -192,11 +213,16 @@ fun MarketContent(
 fun MarketCoinItem(
     coin: Coin,
     modifier: Modifier = Modifier,
+    cardShape: Shape,
     onCoinClick: (Coin) -> Unit
 ) {
-    Card(modifier = modifier.padding(10.dp).clickable {
-        onCoinClick(coin)
-    }, shape = RoundedCornerShape(8.dp)) {
+    Surface(
+        shape = cardShape,
+        color = LocalAppColors.current.surface,
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable { onCoinClick(coin) }
+    ) {
         Box(modifier = modifier.fillMaxWidth().padding(10.dp).clickable {
             onCoinClick(coin)
         }) {
@@ -221,7 +247,7 @@ fun MarketCoinItem(
                     Text(
                         text = coin.name,
                         maxLines = 1,
-                        color = LocalAppColors.current.onSecondary,
+                        color = LocalAppColors.current.onSurface,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         overflow = TextOverflow.Ellipsis
@@ -232,7 +258,7 @@ fun MarketCoinItem(
                         modifier = modifier.padding(top = 5.dp),
                         maxLines = 1,
                         fontSize = 14.sp,
-                        color = LocalAppColors.current.primary,
+                        color = LocalAppColors.current.onSurfaceVariant,
                         overflow = TextOverflow.Ellipsis
                     )
                 }
@@ -255,7 +281,7 @@ fun MarketCoinItem(
                     maxLines = 1,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Medium,
-                    color = LocalAppColors.current.onSecondary,
+                    color = LocalAppColors.current.onPrimaryContainer,
                     overflow = TextOverflow.Ellipsis
                 )
 
@@ -265,7 +291,7 @@ fun MarketCoinItem(
                     maxLines = 1,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = if (isDown) LocalAppColors.current.marketDown else LocalAppColors.current.marketUp,
+                    color = if (isDown) LocalAppColors.current.negativeRed else LocalAppColors.current.positiveGreen,
                     overflow = TextOverflow.Ellipsis
                 )
             }

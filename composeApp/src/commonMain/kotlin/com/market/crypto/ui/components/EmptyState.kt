@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import com.market.crypto.ui.theme.CryptoMarketTheme
+import com.market.crypto.ui.theme.LocalAppColors
 import cryptomarket.composeapp.generated.resources.Res
 import cryptomarket.composeapp.generated.resources.error_coins_unavailable
 import cryptomarket.composeapp.generated.resources.ic_looser
@@ -32,7 +33,7 @@ fun EmptyState(
     subtitle: @Composable () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Box(modifier = modifier.background(MaterialTheme.colorScheme.background)) {
+    Box(modifier = modifier.background(LocalAppColors.current.background)) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
@@ -52,7 +53,7 @@ fun EmptyState(
             Text(
                 text = title,
                 style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onBackground
+                color = LocalAppColors.current.onBackground
             )
 
             Spacer(Modifier.height(4.dp))
@@ -73,7 +74,7 @@ private fun EmptyStatePreview() {
                 Text(
                     text = stringResource(Res.string.error_coins_unavailable),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = LocalAppColors.current.onSurfaceVariant
                 )
             }
         )

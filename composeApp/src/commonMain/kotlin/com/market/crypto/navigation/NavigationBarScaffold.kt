@@ -43,6 +43,7 @@ import androidx.navigation.compose.rememberNavController
 import com.market.crypto.data.source.local.database.model.Coin
 import com.market.crypto.ui.screens.details.DetailsScreen
 import com.market.crypto.ui.screens.market.MarketScreen
+import com.market.crypto.ui.screens.market.MarketViewModel
 import com.market.crypto.ui.theme.LocalAppColors
 import cryptomarket.composeapp.generated.resources.Res
 import cryptomarket.composeapp.generated.resources.favourites_screen
@@ -57,6 +58,7 @@ import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun NavigationBarScaffold(
@@ -133,6 +135,8 @@ fun BottomNavigationBar(
     navController: NavHostController,
     screens: PersistentList<NavigationBarScreen>,
 ) {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
 
     AppBottomNavigationBar(show = true) {
         screens.forEach { item ->
@@ -142,7 +146,7 @@ fun BottomNavigationBar(
                 onClick = {
                     navigateBottomBar(navController, item.route)
                 },
-                selected = navController.currentBackStackEntry?.destination?.route == item.route
+                selected = currentRoute == item.route
             )
         }
     }

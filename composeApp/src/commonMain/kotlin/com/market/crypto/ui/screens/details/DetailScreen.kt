@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -44,6 +42,9 @@ import com.market.crypto.ui.screens.details.components.MarketStatsCard
 import com.market.crypto.ui.theme.LocalAppColors
 import cryptomarket.composeapp.generated.resources.Res
 import cryptomarket.composeapp.generated.resources.card_header_market_stats
+import cryptomarket.composeapp.generated.resources.ic_back
+import cryptomarket.composeapp.generated.resources.ic_gainer
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -177,9 +178,9 @@ fun DetailsTopBar(
 ) {
     LargeTopAppBar(
         navigationIcon = {
-            IconButton(onClick = onNavigateUp) {
+            IconButton(modifier = Modifier.size(35.dp).padding(start = 10.dp),onClick = onNavigateUp) {
                 Icon(
-                    imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+                    painter = painterResource(Res.drawable.ic_back),
                     contentDescription = "Back"
                 )
             }

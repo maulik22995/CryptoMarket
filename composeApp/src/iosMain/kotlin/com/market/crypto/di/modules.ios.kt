@@ -1,6 +1,7 @@
 package com.market.crypto.di
 
 import androidx.room.Room
+import androidx.sqlite.driver.NativeSQLiteDriver
 import com.market.crypto.data.db.AppDatabase
 import io.ktor.client.engine.darwin.Darwin
 import kotlinx.cinterop.ExperimentalForeignApi
@@ -20,7 +21,8 @@ fun getDatabaseBuilder():AppDatabase {
     val dbFilePath = documentDirectory() + "/coinMarket.db"
     return Room.databaseBuilder<AppDatabase>(
         name = dbFilePath,
-    ).build()
+    ).setDriver(NativeSQLiteDriver()).build()
+
 }
 
 @OptIn(ExperimentalForeignApi::class)

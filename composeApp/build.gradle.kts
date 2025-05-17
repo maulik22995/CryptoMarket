@@ -34,7 +34,9 @@ kotlin {
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
-            isStatic = true
+            isStatic = false
+            // Required when using NativeSQLiteDriver
+            linkerOpts.add("-lsqlite3")
         }
     }
 
@@ -47,13 +49,14 @@ kotlin {
             implementation(libs.koin.android)
             implementation(libs.koin.android.compose)
             implementation(libs.ktor.client.okhttp)
-            implementation(libs.androidx.compose.material3.android)
+//            implementation(libs.androidx.compose.material3.android)
             implementation(libs.room.runtime.android)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
+//            implementation(libs.androidx.compose.material3)
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
@@ -85,7 +88,7 @@ kotlin {
             implementation(compose.desktop.currentOs)
             implementation(libs.ktor.client.okhttp)
             implementation(libs.kotlinx.coroutines.swing)
-            implementation(libs.androidx.compose.material3.desk)
+//            implementation(libs.androidx.compose.material3.desk)
         }
     }
 }

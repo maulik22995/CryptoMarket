@@ -5,6 +5,7 @@ import com.market.crypto.data.source.local.model.CoinSort
 import com.market.crypto.data.source.local.model.Currency
 import com.market.crypto.data.source.remote.model.CoinChartApiModel
 import com.market.crypto.data.source.remote.model.CoinDetailsApiModel
+import com.market.crypto.data.source.remote.model.CoinSearchResultsApiModel
 import com.market.crypto.data.source.remote.model.CoinsApiModel
 import com.market.crypto.data.source.remote.model.MarketStatsApiModel
 
@@ -20,4 +21,7 @@ interface CoinNetworkDataSource {
         chartPeriod: String,
         currency: Currency
     ): CoinChartApiModel
+
+    suspend fun getCoinSearchResults(searchQuery: String): CoinSearchResultsApiModel
+
 }

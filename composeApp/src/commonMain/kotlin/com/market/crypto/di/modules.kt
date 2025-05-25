@@ -4,6 +4,7 @@ import com.market.crypto.common.Constants
 import com.market.crypto.data.mapper.CoinChartMapper
 import com.market.crypto.data.mapper.CoinDetailsMapper
 import com.market.crypto.data.mapper.CoinMapper
+import com.market.crypto.data.mapper.CoinSearchResultsMapper
 import com.market.crypto.data.mapper.MarketStatsMapper
 import com.market.crypto.data.repository.chart.CoinChartRepository
 import com.market.crypto.data.repository.chart.CoinChartRepositoryImpl
@@ -13,6 +14,8 @@ import com.market.crypto.data.repository.details.CoinDetailsRepository
 import com.market.crypto.data.repository.details.CoinDetailsRepositoryImpl
 import com.market.crypto.data.repository.marketStatus.MarketStatsRepository
 import com.market.crypto.data.repository.marketStatus.MarketStatsRepositoryImpl
+import com.market.crypto.data.repository.search.CoinSearchResultsRepository
+import com.market.crypto.data.repository.search.CoinSearchResultsRepositoryImpl
 import com.market.crypto.data.source.local.database.CoinLocalDataSource
 import com.market.crypto.data.source.local.database.CoinLocalDataSourceImpl
 import com.market.crypto.data.source.remote.CoinNetworkDataSource
@@ -22,8 +25,10 @@ import com.market.crypto.domain.details.GetCoinDetailsUseCase
 import com.market.crypto.domain.market.GetCoinUseCase
 import com.market.crypto.domain.market.GetMarketStatsUseCase
 import com.market.crypto.domain.market.UpdateCachedCoinsUseCase
+import com.market.crypto.domain.search.GetCoinSearchResultsUseCase
 import com.market.crypto.ui.screens.market.MarketViewModel
 import com.market.crypto.ui.screens.details.DetailsViewModel
+import com.market.crypto.ui.screens.search.SearchViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
@@ -62,6 +67,7 @@ expect val platformModule: Module
 val viewModels = module {
     viewModelOf(::MarketViewModel)
     viewModelOf(::DetailsViewModel)
+    viewModelOf(::SearchViewModel)
 }
 
 val repositoryModule = module {
@@ -69,6 +75,7 @@ val repositoryModule = module {
     singleOf(::MarketStatsRepositoryImpl).bind<MarketStatsRepository>()
     singleOf(::CoinDetailsRepositoryImpl).bind<CoinDetailsRepository>()
     singleOf(::CoinChartRepositoryImpl).bind<CoinChartRepository>()
+    singleOf(::CoinSearchResultsRepositoryImpl).bind<CoinSearchResultsRepository>()
 }
 
 val mapperModule = module {
@@ -76,6 +83,7 @@ val mapperModule = module {
     single { MarketStatsMapper() }
     single { CoinChartMapper() }
     single { CoinDetailsMapper() }
+    single { CoinSearchResultsMapper() }
 }
 
 val dataSourceModule = module {
@@ -89,6 +97,7 @@ val useCasesModules = module {
     single { GetMarketStatsUseCase(get()) }
     single { GetCoinDetailsUseCase(get()) }
     single { GetCoinChartUseCase(get()) }
+    single { GetCoinSearchResultsUseCase(get()) }
 }
 
 val networkModule = module {

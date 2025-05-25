@@ -44,6 +44,7 @@ import com.market.crypto.data.source.local.database.model.Coin
 import com.market.crypto.ui.screens.details.DetailsScreen
 import com.market.crypto.ui.screens.market.MarketScreen
 import com.market.crypto.ui.screens.market.MarketViewModel
+import com.market.crypto.ui.screens.search.SearchScreen
 import com.market.crypto.ui.theme.LocalAppColors
 import cryptomarket.composeapp.generated.resources.Res
 import cryptomarket.composeapp.generated.resources.favourites_screen
@@ -115,7 +116,9 @@ fun NavigationBarNavHost(
         }
 
         composable(route = NavigationBarScreen.Search.route) {
-            Text("Search")
+           SearchScreen(onNavigateDetails = {id ->
+               navController.navigate(Screen.Details.route + "/${id}")
+           })
         }
 
         composable(

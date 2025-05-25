@@ -8,6 +8,7 @@ import com.market.crypto.data.source.local.model.getOrderDirection
 import com.market.crypto.data.source.local.model.toCurrencyUUID
 import com.market.crypto.data.source.remote.model.CoinChartApiModel
 import com.market.crypto.data.source.remote.model.CoinDetailsApiModel
+import com.market.crypto.data.source.remote.model.CoinSearchResultsApiModel
 import com.market.crypto.data.source.remote.model.CoinsApiModel
 import com.market.crypto.data.source.remote.model.MarketStatsApiModel
 import io.ktor.client.HttpClient
@@ -17,7 +18,6 @@ import io.ktor.client.request.parameter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
-
 class CoinNetworkDataSourceImpl(private val httpClient: HttpClient) : CoinNetworkDataSource {
     override suspend fun getCoins(coinSort: CoinSort, currency: Currency): CoinsApiModel =
         withContext(Dispatchers.IO) {
@@ -52,6 +52,14 @@ class CoinNetworkDataSourceImpl(private val httpClient: HttpClient) : CoinNetwor
         return@withContext httpClient.get("${BASE_URL}coin/${coinId}/history"){
             parameter("referenceCurrencyUuid",currency.toCurrencyUUID())
             parameter("timePeriod",chartPeriod)
+        }.body()
+    }
+
+    override suspend fun getCoinSearchResults(searchQuery: String): CoinSearchResultsApiModel = withContext(Dispatchers.IO){
+        println("getCoinSearchResults >>")
+        return@withContext httpClient.get("${BASE_URL}search-suggestions"){
+            parameter("query",searchQuery)
+            parameter("referenceCurrencyUuid","yhjMzLPhuIDl")
         }.body()
     }
 }

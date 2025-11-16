@@ -13,15 +13,18 @@ interface FavouriteCoinDao {
     @Query("SELECT * FROM FavouriteCoin")
     suspend fun getFavouriteCoins(): List<FavouriteCoin>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertFavouriteCoins(favouriteCoins: List<FavouriteCoin>)
-
     @Query("DELETE FROM FavouriteCoin")
     suspend fun deleteAllFavouriteCoins()
 
-    @Transaction
-    suspend fun updateFavouriteCoins(favouriteCoins: List<FavouriteCoin>) {
-        deleteAllFavouriteCoins()
-        insertFavouriteCoins(favouriteCoins)
-    }
+    // Insert with ignore strategy to avoid crash on duplicate
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertFavouriteCoin(coin: FavouriteCoin)
+
+    // Delete a single coin by ID
+    @Query("DELETE FROM FavouriteCoin WHERE id = :coinId")
+    suspend fun deleteFavouriteCoin(coinId: String)
+
+    // Check if coinId exists
+    @Query("SELECT COUNT(*) FROM FavouriteCoin WHERE id = :coinId")
+    suspend fun isCoinFavourite(coinId: String): Int
 }

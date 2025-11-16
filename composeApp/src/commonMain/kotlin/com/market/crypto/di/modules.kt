@@ -23,12 +23,16 @@ import com.market.crypto.data.source.remote.CoinNetworkDataSourceImpl
 import com.market.crypto.domain.details.GetCoinChartUseCase
 import com.market.crypto.domain.details.GetCoinDetailsUseCase
 import com.market.crypto.domain.market.GetCoinUseCase
+import com.market.crypto.domain.market.GetFavouriteCoinsUseCase
 import com.market.crypto.domain.market.GetMarketStatsUseCase
+import com.market.crypto.domain.market.IsCoinFavouriteUseCase
+import com.market.crypto.domain.market.ToggleFavouriteCoinUseCase
 import com.market.crypto.domain.market.UpdateCachedCoinsUseCase
 import com.market.crypto.domain.search.GetCoinSearchResultsUseCase
 import com.market.crypto.ui.screens.market.MarketViewModel
 import com.market.crypto.ui.screens.details.DetailsViewModel
 import com.market.crypto.ui.screens.search.SearchViewModel
+import com.market.crypto.ui.screens.favourites.FavouritesViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
@@ -68,6 +72,7 @@ val viewModels = module {
     viewModelOf(::MarketViewModel)
     viewModelOf(::DetailsViewModel)
     viewModelOf(::SearchViewModel)
+    viewModelOf(::FavouritesViewModel)
 }
 
 val repositoryModule = module {
@@ -95,9 +100,13 @@ val useCasesModules = module {
     single { GetCoinUseCase(get()) }
     single { UpdateCachedCoinsUseCase(get()) }
     single { GetMarketStatsUseCase(get()) }
+    single { GetMarketStatsUseCase(get()) }
     single { GetCoinDetailsUseCase(get()) }
     single { GetCoinChartUseCase(get()) }
     single { GetCoinSearchResultsUseCase(get()) }
+    single { GetFavouriteCoinsUseCase(get()) }
+    single { IsCoinFavouriteUseCase(get()) }
+    single { ToggleFavouriteCoinUseCase(get()) }
 }
 
 val networkModule = module {

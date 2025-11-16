@@ -3,9 +3,11 @@ package com.market.crypto.data.source.local.database
 import com.market.crypto.data.db.AppDatabase
 import com.market.crypto.data.source.local.database.model.Coin
 import com.market.crypto.data.source.local.database.model.FavouriteCoin
-import com.market.crypto.data.source.local.database.model.FavouriteCoinId
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.withContext
 
 class CoinLocalDataSourceImpl(
     private val appDatabase: AppDatabase,
@@ -19,31 +21,37 @@ class CoinLocalDataSourceImpl(
     }
 
     override fun getFavouriteCoins(): Flow<List<FavouriteCoin>> {
-        return flow { appDatabase.favouriteCoinDao().getFavouriteCoins() }
-    }
-
-    override suspend fun updateFavouriteCoins(favouriteCoins: List<FavouriteCoin>) {
-        appDatabase.favouriteCoinDao().updateFavouriteCoins(favouriteCoins)
-    }
-
-    override fun getFavouriteCoinIds(): Flow<List<FavouriteCoinId>> {
-        return flow { appDatabase.favouriteCoinIdDao().getFavouriteCoinIds() }
-    }
-
-    override fun isCoinFavourite(favouriteCoinId: FavouriteCoinId): Flow<Boolean> {
-        return flow {
-            appDatabase.favouriteCoinIdDao().isCoinFavourite(coinId = favouriteCoinId.id)
+        return flow { 
+            emit(withContext(Dispatchers.IO) {
+                appDatabase.favouriteCoinDao().getFavouriteCoins()
+            })
         }
     }
 
-    override suspend fun toggleIsCoinFavourite(favouriteCoinId: FavouriteCoinId) {
-        val isCoinFavourite =
-            appDatabase.favouriteCoinIdDao().isCoinFavouriteOneShot(favouriteCoinId.id)
+    override suspend fun insertFavouriteCoin(favouriteCoin: FavouriteCoin) {
+        withContext(Dispatchers.IO) {
+            appDatabase.favouriteCoinDao().insertFavouriteCoin(favouriteCoin)
+        }
+    }
 
-        if (isCoinFavourite) {
-            appDatabase.favouriteCoinIdDao().delete(favouriteCoinId)
-        } else {
-            appDatabase.favouriteCoinIdDao().insert(favouriteCoinId)
+    override fun isCoinFavourite(favouriteCoinId: String): Flow<Boolean> {
+        return flow {
+            emit(withContext(Dispatchers.IO) {
+                appDatabase.favouriteCoinDao().isCoinFavourite(favouriteCoinId) > 0
+            })
+        }
+    }
+
+    override suspend fun toggleIsCoinFavourite(favouriteCoin: FavouriteCoin) {
+        withContext(Dispatchers.IO) {
+            val dao = appDatabase.favouriteCoinDao()
+            val isFav = dao.isCoinFavourite(favouriteCoin.id) > 0
+
+            if (isFav) {
+                dao.deleteFavouriteCoin(favouriteCoin.id)
+            } else {
+                dao.insertFavouriteCoin(favouriteCoin)
+            }
         }
     }
 }

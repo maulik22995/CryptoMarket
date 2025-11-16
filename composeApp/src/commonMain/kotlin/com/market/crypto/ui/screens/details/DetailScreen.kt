@@ -43,6 +43,8 @@ import com.market.crypto.ui.theme.LocalAppColors
 import cryptomarket.composeapp.generated.resources.Res
 import cryptomarket.composeapp.generated.resources.card_header_market_stats
 import cryptomarket.composeapp.generated.resources.ic_back
+import cryptomarket.composeapp.generated.resources.ic_favourite
+import cryptomarket.composeapp.generated.resources.ic_fill_heart
 import cryptomarket.composeapp.generated.resources.ic_gainer
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -59,7 +61,8 @@ fun DetailsScreen(
         onNavigateUp,
         onClickChartPeriod = { chartPeriod ->
             viewModel.updateChartPeriod(chartPeriod)
-        }
+        },
+        onToggleFavourite = { viewModel.toggleFavourite() }
     )
 }
 
@@ -69,7 +72,8 @@ fun DetailsScreenUI(
     uiState: DetailsUiState,
     onNavigateUp: () -> Unit,
     onClickChartPeriod: (ChartPeriod) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onToggleFavourite: (() -> Unit)? = null
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(topBar = {
@@ -77,9 +81,11 @@ fun DetailsScreenUI(
             is DetailsUiState.Success -> {
                 DetailsTopBar(
                     coinDetails = uiState.coinDetails,
-                    onNavigateUp,
-                    scrollBehavior,
-                    modifier
+                    isCoinFavourite = uiState.isCoinFavourite,
+                    onToggleFavourite = onToggleFavourite ?: {},
+                    onNavigateUp = onNavigateUp,
+                    scrollBehavior = scrollBehavior,
+                    modifier = modifier
                 )
             }
 
@@ -90,27 +96,17 @@ fun DetailsScreenUI(
     }, modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection)) {scaffoldPadding ->
         when(uiState){
             is DetailsUiState.Success -> {
-                    DetailsContent(
-                        uiState.coinDetails,
-                        uiState.coinChart,
-                        uiState.chartPeriod,
-                        onClickChartPeriod,
-                        Modifier.padding(scaffoldPadding)
-                    )
-            }
-
-            is DetailsUiState.Error -> {
-                ErrorState(
-                    message = uiState.message,
-                    modifier = Modifier.padding(scaffoldPadding)
+                DetailsContent(
+                    uiState.coinDetails,
+                    uiState.coinChart,
+                    uiState.chartPeriod,
+                    onClickChartPeriod,
+                    Modifier.padding(scaffoldPadding)
                 )
             }
-
-            is DetailsUiState.Loading -> {
-                LoadingIndicator()
-            }
+            is DetailsUiState.Error -> ErrorState(uiState.message ?: "Unknown error")
+            DetailsUiState.Loading -> LoadingIndicator()
         }
-
     }
 }
 
@@ -172,6 +168,8 @@ fun DetailsContent(
 @Composable
 fun DetailsTopBar(
     coinDetails: CoinDetails,
+    isCoinFavourite: Boolean,
+    onToggleFavourite: () -> Unit,
     onNavigateUp: () -> Unit,
     scrollBehavior: TopAppBarScrollBehavior,
     modifier: Modifier
@@ -187,14 +185,12 @@ fun DetailsTopBar(
         },
         title = {
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(end = 10.dp)) {
-
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = coinDetails.name,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
-
                     Text(
                         text = coinDetails.symbol,
                         style = MaterialTheme.typography.titleSmall,
@@ -203,7 +199,6 @@ fun DetailsTopBar(
                         overflow = TextOverflow.Ellipsis
                     )
                 }
-
                 coil3.compose.AsyncImage(
                     modifier = modifier.size(44.dp).clip(shape = RoundedCornerShape(25.dp)),
                     model = coinDetails.imageUrl,
@@ -213,6 +208,12 @@ fun DetailsTopBar(
                         println("url error>> ${coinDetails.imageUrl} error is ${it.result.throwable}")
                     }
                 )
+                IconButton(onClick = onToggleFavourite) {
+                    Icon(
+                        painter = if (isCoinFavourite)painterResource(Res.drawable.ic_fill_heart) else painterResource(Res.drawable.ic_favourite),
+                        contentDescription = if (isCoinFavourite) "Unfavourite" else "Favourite",
+                    )
+                }
             }
         },
         colors = TopAppBarDefaults.largeTopAppBarColors(

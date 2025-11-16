@@ -42,6 +42,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.market.crypto.data.source.local.database.model.Coin
 import com.market.crypto.ui.screens.details.DetailsScreen
+import com.market.crypto.ui.screens.favourites.FavouritesScreen
 import com.market.crypto.ui.screens.market.MarketScreen
 import com.market.crypto.ui.screens.market.MarketViewModel
 import com.market.crypto.ui.screens.search.SearchScreen
@@ -112,7 +113,9 @@ fun NavigationBarNavHost(
         }
 
         composable(route = NavigationBarScreen.Favourites.route) {
-            Text("Favourites")
+            FavouritesScreen(onCoinClick = { coinId ->
+                navController.navigate(Screen.Details.route + "/${coinId}")
+            })
         }
 
         composable(route = NavigationBarScreen.Search.route) {

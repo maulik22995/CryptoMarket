@@ -4,6 +4,7 @@ import com.market.crypto.common.Result
 import com.market.crypto.data.mapper.CoinMapper
 import com.market.crypto.data.source.local.database.CoinLocalDataSource
 import com.market.crypto.data.source.local.database.model.Coin
+import com.market.crypto.data.source.local.database.model.FavouriteCoin
 import com.market.crypto.data.source.local.model.CoinSort
 import com.market.crypto.data.source.local.model.Currency
 import com.market.crypto.data.source.remote.CoinNetworkDataSource
@@ -38,5 +39,17 @@ class CoinRepositoryImpl(
 
     override suspend fun updateCachedCoins(coins: List<Coin>) {
         return coinLocalDataSource.updateCoins(coins)
+    }
+
+    override fun getFavouriteCoins() = coinLocalDataSource.getFavouriteCoins()
+    override suspend fun insertFavouriteCoin(favouriteCoin: FavouriteCoin) {
+        coinLocalDataSource.insertFavouriteCoin(favouriteCoin)
+    }
+
+    override fun isCoinFavourite(favouriteCoinId: String) =
+        coinLocalDataSource.isCoinFavourite(favouriteCoinId)
+
+    override suspend fun toggleIsCoinFavourite(favouriteCoin: FavouriteCoin) {
+        coinLocalDataSource.toggleIsCoinFavourite(favouriteCoin)
     }
 }

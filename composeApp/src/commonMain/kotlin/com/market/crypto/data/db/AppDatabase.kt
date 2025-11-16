@@ -8,17 +8,14 @@ import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
 import com.market.crypto.data.source.local.database.dao.CoinDao
 import com.market.crypto.data.source.local.database.dao.FavouriteCoinDao
-import com.market.crypto.data.source.local.database.dao.FavouriteCoinIdDao
 import com.market.crypto.data.source.local.database.model.Coin
 import com.market.crypto.data.source.local.database.model.FavouriteCoin
-import com.market.crypto.data.source.local.database.model.FavouriteCoinId
 
-@Database(entities = [Coin::class, FavouriteCoin::class, FavouriteCoinId::class], version = 1)
+@Database(entities = [Coin::class, FavouriteCoin::class], version = 1)
 @ConstructedBy(AppDatabaseConstructor::class)
 abstract class AppDatabase : RoomDatabase(), DB {
     abstract fun coinDao(): CoinDao
     abstract fun favouriteCoinDao(): FavouriteCoinDao
-    abstract fun favouriteCoinIdDao(): FavouriteCoinIdDao
     override fun clearAllTables() {
     }
 }

@@ -21,11 +21,7 @@ class CoinLocalDataSourceImpl(
     }
 
     override fun getFavouriteCoins(): Flow<List<FavouriteCoin>> {
-        return flow { 
-            emit(withContext(Dispatchers.IO) {
-                appDatabase.favouriteCoinDao().getFavouriteCoins()
-            })
-        }
+        return appDatabase.favouriteCoinDao().getFavouriteCoins()
     }
 
     override suspend fun insertFavouriteCoin(favouriteCoin: FavouriteCoin) {

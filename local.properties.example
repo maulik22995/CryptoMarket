@@ -1,0 +1,5 @@
+# Copy this file to local.properties and add your Coinranking API key.
+# local.properties is gitignored and must not be committed.
+#
+# Get a free key: https://developers.coinranking.com/
+COINRANKING_API_KEY=your_key_here

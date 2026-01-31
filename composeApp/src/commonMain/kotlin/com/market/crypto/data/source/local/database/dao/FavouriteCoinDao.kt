@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface FavouriteCoinDao {
     @Query("SELECT * FROM FavouriteCoin")
-    suspend fun getFavouriteCoins(): List<FavouriteCoin>
+    fun getFavouriteCoins(): Flow<List<FavouriteCoin>>
 
     @Query("DELETE FROM FavouriteCoin")
     suspend fun deleteAllFavouriteCoins()

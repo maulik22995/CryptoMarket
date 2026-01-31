@@ -1,6 +1,6 @@
 package com.market.crypto.di
 
-import com.market.crypto.common.Constants
+import com.market.crypto.common.coinrankingApiKey
 import com.market.crypto.data.mapper.CoinChartMapper
 import com.market.crypto.data.mapper.CoinDetailsMapper
 import com.market.crypto.data.mapper.CoinMapper
@@ -116,7 +116,7 @@ val networkModule = module {
 fun createHttpClient(): HttpClient {
     return HttpClient {
         defaultRequest {
-            headers.appendIfNameAbsent("x-access-token",Constants.API_KEY)
+            headers.appendIfNameAbsent("x-access-token", coinrankingApiKey())
         }
         install(Logging) {
             logger = object : Logger{

@@ -1,6 +1,7 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -107,6 +108,15 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
+        val localProperties = Properties()
+        rootProject.file("local.properties").takeIf { it.exists() }?.inputStream()?.use {
+            localProperties.load(it)
+        }
+        buildConfigField(
+            "String",
+            "COINRANKING_API_KEY",
+            "\"${localProperties.getProperty("COINRANKING_API_KEY", "")}\""
+        )
     }
     packaging {
         resources {
@@ -124,6 +134,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     dependencies {
         debugImplementation(compose.uiTooling)
@@ -149,7 +160,7 @@ room {
 dependencies {
     ksp(libs.room.compiler)
     // Room
-    add("kspCommonMainMetadata", libs.room.compiler)
+    kspCommonMainMetadata(libs.room.compiler)
 }
 
 tasks.withType<Test> {

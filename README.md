@@ -117,10 +117,13 @@ Get a free API key at [Coinranking developers](https://developers.coinranking.co
 
 Watch the app in action on both platforms:
 
-| Platform | Video |
-|----------|-------|
-| **Android** | [Watch Android demo](doc/android.mp4) |
-| **iOS**     | [Watch iOS demo](doc/ios.mp4) |
+### Android
+
+<video src="doc/android.mp4" controls width="320"></video>
+
+### iOS
+
+<video src="doc/ios.mp4" controls width="320"></video>
 
 ---
 
